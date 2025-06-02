@@ -2,6 +2,7 @@
 node_modules
 /.pnp
 .pnp.js
+cloudfront-config.json
 
 # Testing
 /coverage
