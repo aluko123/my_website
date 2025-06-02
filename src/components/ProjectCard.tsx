@@ -1,16 +1,5 @@
-import {
-  Box,
-  Image,
-  Heading,
-  Text,
-  HStack,
-  Tag,
-  Link,
-  VStack,
-  useColorModeValue,
-  Badge
-} from '@chakra-ui/react'
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
+import { Box, Heading, Text, Image, Link, Badge } from '@chakra-ui/react'
+import { FaGithub } from 'react-icons/fa'
 
 interface ProjectCardProps {
   title: string
@@ -18,58 +7,21 @@ interface ProjectCardProps {
   image: string
   technologies: string[]
   link: string
-  transition?: string
-  _hover?: { transform: string }
 }
 
-export const ProjectCard = ({
-  title,
-  description,
-  image,
-  technologies,
-  link,
-  transition,
-  _hover
-}: ProjectCardProps) => {
-  const bg = useColorModeValue('white', 'gray.800')
-  const textColor = useColorModeValue('gray.600', 'gray.300')
-
+export const ProjectCard = ({ title, description, image, technologies, link }: ProjectCardProps) => {
   return (
-    <Box
-      p={6}
-      bg={bg}
-      rounded="lg"
-      shadow="md"
-      border="1px"
-      borderColor={useColorModeValue('gray.200', 'gray.700')}
-      w="full"
-      maxW="md"
-      transition={transition}
-      _hover={_hover}
-    >
-      <Image src={image} alt={title} w="full" h="48" objectFit="cover" rounded="md" mb={4} />
-      <Heading size="md" mb={2}>
-        {title}
-      </Heading>
-      <Text color={textColor} mb={4}>
-        {description}
-      </Text>
-      <Box mb={4}>
+    <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
+      <Image src={image} alt={title} />
+      <Heading size="md" mt={2}>{title}</Heading>
+      <Text mt={2}>{description}</Text>
+      <Box mt={2}>
         {technologies.map((tech) => (
-          <Badge key={tech} mr={2} mb={2} colorScheme="purple">
-            {tech}
-          </Badge>
+          <Badge key={tech} mr={2}>{tech}</Badge>
         ))}
       </Box>
-      <Link href={link} isExternal>
-        <Box
-          as={FaGithub}
-          w={6}
-          h={6}
-          color="blue.500"
-          _hover={{ color: 'blue.600' }}
-          transition="color 0.2s"
-        />
+      <Link href={link} isExternal mt={2} display="inline-block">
+        <FaGithub /> GitHub
       </Link>
     </Box>
   )
