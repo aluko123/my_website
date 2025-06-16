@@ -16,6 +16,14 @@ export const Header = () => {
       borderBottom="1px"
       borderColor={borderColor}
       zIndex={1000}
+      overflowX="auto"
+      css={{
+        '&::-webkit-scrollbar': {
+          display: 'none'
+        },
+        '-ms-overflow-style': 'none',
+        'scrollbar-width': 'none'
+      }}
     >
       <Flex
         maxW="container.xl"
@@ -24,6 +32,7 @@ export const Header = () => {
         h={16}
         alignItems="center"
         justifyContent="space-between"
+        minW="max-content"
       >
         <Box fontWeight="bold" fontSize="xl">
           Fola Aluko

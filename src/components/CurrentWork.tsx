@@ -11,7 +11,7 @@ export const CurrentWork = () => {
       title: 'Real-time Text Editing',
       description: 'Building a real-time collaboration text editor stored on local akin to Google Docs.',
       status: 'In Progress',
-      tech: ['Go', 'WebSocket', 'Ngrok', 'Fsnotify']
+      tech: ['Go', 'WebSocket', 'Cloudflared Tunnel', 'Fsnotify']
     },
     {
       icon: FaBook,
