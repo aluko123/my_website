@@ -41,7 +41,7 @@ export const Contact = () => {
 
         <HStack spacing={6}>
           <Link
-            href="mailto:dmzee599@gmail.com"
+            href="mailto:folaaluko02@gmail.com"
             color="blue.500"
             _hover={{ color: 'blue.600' }}
             display="flex"
@@ -49,7 +49,7 @@ export const Contact = () => {
             gap={2}
           >
             <Icon as={FaEnvelope} />
-            <Text>dmzee599@gmail.com</Text>
+            <Text>folaaluko02@gmail.com</Text>
           </Link>
         </HStack>
 
