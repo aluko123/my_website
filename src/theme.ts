@@ -1,4 +1,4 @@
-import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
+import { extendTheme, type StyleFunctionProps, type ThemeConfig } from '@chakra-ui/react'
 
 const config: ThemeConfig = {
   initialColorMode: 'system',
@@ -7,25 +7,29 @@ const config: ThemeConfig = {
 
 const theme = extendTheme({
   config,
+  fonts: {
+    heading: "'Fraunces', 'Georgia', serif",
+    body: "'IBM Plex Sans', 'Segoe UI', sans-serif",
+  },
   colors: {
     brand: {
-      50: '#f0f9ff',
-      100: '#e0f2fe',
-      200: '#bae6fd',
-      300: '#7dd3fc',
-      400: '#38bdf8',
-      500: '#0ea5e9',
-      600: '#0284c7',
-      700: '#0369a1',
-      800: '#075985',
-      900: '#0c4a6e',
+      50: '#f2f8f6',
+      100: '#d6ebe4',
+      200: '#b6dbcf',
+      300: '#8cc5b2',
+      400: '#63ac95',
+      500: '#4b907b',
+      600: '#3b7262',
+      700: '#2d584d',
+      800: '#203f37',
+      900: '#122924',
     },
   },
   styles: {
-    global: (props: any) => ({
+    global: (props: StyleFunctionProps) => ({
       body: {
-        bg: props.colorMode === 'dark' ? 'gray.900' : 'gray.50',
-        color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+        bg: props.colorMode === 'dark' ? '#11151e' : '#f8f8f6',
+        color: props.colorMode === 'dark' ? '#edf2f7' : '#1f2937',
       },
     }),
   },

@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background-image:
+    linear-gradient(rgba(16, 24, 40, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 24, 40, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at 10% 20%, rgba(75, 144, 123, 0.11) 0, rgba(75, 144, 123, 0) 36%),
+    radial-gradient(circle at 90% 10%, rgba(18, 41, 36, 0.1) 0, rgba(18, 41, 36, 0) 45%);
+  background-size: 34px 34px, 34px 34px, auto, auto;
+}
+
+.lab-shell {
+  position: relative;
+}
+
+.lab-content a {
+  text-underline-offset: 0.14rem;
+  text-decoration-thickness: 1px;
+}
+
+.eyebrow {
+  font-family: 'IBM Plex Mono', 'IBM Plex Sans', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #374151;
+}
+
+.top-nav {
+  backdrop-filter: blur(2px);
+}
+
+.section-kicker {
+  font-family: 'IBM Plex Mono', 'IBM Plex Sans', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+  color: #4b5563;
+}
+
+.manifesto-block {
+  border-left: 3px solid #6b7280;
+  padding: 0.65rem 0.85rem;
+  background: rgba(107, 114, 128, 0.08);
+}
+
+.section-divider {
+  border-top: 1px solid rgba(107, 114, 128, 0.35);
+  padding-top: 1.2rem;
+}

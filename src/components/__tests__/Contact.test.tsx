@@ -24,9 +24,9 @@ describe('Contact', () => {
 
   it('renders the email link', () => {
     renderWithChakra(<Contact />)
-    const emailLink = screen.getByText('dmzee599@gmail.com')
+    const emailLink = screen.getByText('folaaluko02@gmail.com')
     expect(emailLink).toBeInTheDocument()
-    expect(emailLink.closest('a')).toHaveAttribute('href', 'mailto:dmzee599@gmail.com')
+    expect(emailLink.closest('a')).toHaveAttribute('href', 'mailto:folaaluko02@gmail.com')
   })
 
   it('renders social links', () => {

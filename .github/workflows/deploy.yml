@@ -1,114 +1,49 @@
-# .github/workflows/deploy.yml
-name: Deploy to AWS
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ master ]  # Trigger on push to main branch
-  pull_request:
-    branches: [ master ]
+    branches: [master]
+  workflow_dispatch:
 
-env:
-  AWS_REGION: us-east-2
-  ECR_REPOSITORY: my_website
-  CONTAINER_NAME: my-app
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   deploy:
-    name: Deploy to EC2
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
-    
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-    
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        # Build Docker image
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
-        
-        # Push both tagged and latest images
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-        
-        # Output image URI for next step
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:latest" >> $GITHUB_OUTPUT
-    
-    - name: Setup SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/ec2-key.pem
-        chmod 600 ~/.ssh/ec2-key.pem
-    
-    - name: Deploy to EC2
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_URI: ${{ steps.build-image.outputs.image }}
-      run: |
-        # Create deployment script
-        cat > deploy_script.sh << 'EOF'
-        #!/bin/bash
-        set -e
-        
-        # Login to ECR
-        aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin $1
-        
-        # Pull latest image
-        docker pull $2
-        
-        # Stop and remove existing container if it exists
-        if [ $(docker ps -q -f name=my-app) ]; then
-            echo "Stopping existing container..."
-            docker stop my-app
-        fi
-        
-        if [ $(docker ps -aq -f name=my-app) ]; then
-            echo "Removing existing container..."
-            docker rm my-app
-        fi
-        
-        # Run new container
-        echo "Starting new container..."
-        docker run -d \
-          --name my-app \
-          -p 80:80 \
-          --restart unless-stopped \
-          $2
-        
-        # Clean up old images (keep last 3)
-        docker image prune -f
-        
-        echo "Deployment completed successfully!"
-        EOF
-        
-        # Make script executable
-        chmod +x deploy_script.sh
-        
-        # Copy script to EC2 and execute
-        scp -i ~/.ssh/ec2-key.pem -o StrictHostKeyChecking=no \
-          deploy_script.sh ec2-user@${{ secrets.EC2_HOST }}:/tmp/
-        
-        ssh -i ~/.ssh/ec2-key.pem -o StrictHostKeyChecking=no \
-          ec2-user@${{ secrets.EC2_HOST }} \
-          "bash /tmp/deploy_script.sh $ECR_REGISTRY $IMAGE_URI"
-    
-    - name: Invalidate CloudFront Cache
-      run: |
-        aws cloudfront create-invalidation \
-          --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-          --paths "/*"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
