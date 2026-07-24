@@ -131,8 +131,6 @@ export const hobbies: Array<{ title: string; note: string }> = [
     },
 ];
 
-export const workLastYear: WorkEntry[] = [];
-
 export const publications: Publication[] = [
     {
         year: "2025",

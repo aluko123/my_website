@@ -10,7 +10,7 @@ import {
   Text,
   UnorderedList,
 } from '@chakra-ui/react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaGithub, FaLinkedin } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 import {
@@ -39,15 +39,10 @@ function App() {
     }
   }, [])
 
-  const activePost = useMemo(() => {
-    const prefix = '#/blog/'
-    if (!hashRoute.startsWith(prefix)) {
-      return undefined
-    }
-
-    const slug = hashRoute.slice(prefix.length)
-    return posts.find((post) => post.slug === slug)
-  }, [hashRoute])
+  const prefix = '#/blog/'
+  const activePost = hashRoute.startsWith(prefix)
+    ? posts.find((post) => post.slug === hashRoute.slice(prefix.length))
+    : undefined
 
   const renderPostContent = (content: string[]) => {
     const blocks: JSX.Element[] = []
